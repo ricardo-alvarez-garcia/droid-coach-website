@@ -3,6 +3,7 @@
     "id": "spec-mode",
     "title": "Spec Mode",
     "category": "Start here",
+    "level": "beginner",
     "icon": "plan",
     "tagline": "A little planning. A lot more confidence.",
     "description": "Review the approach before Droid changes your code.",
@@ -22,6 +23,7 @@
     "id": "agents-md",
     "title": "AGENTS.md",
     "category": "Make it yours",
+    "level": "beginner",
     "icon": "file",
     "tagline": "Your project. Your ground rules.",
     "description": "Give every session a dependable project briefing.",
@@ -41,6 +43,7 @@
     "id": "skills",
     "title": "Skills",
     "category": "Make it yours",
+    "level": "beginner",
     "icon": "spark",
     "tagline": "Teach it once. Use it again.",
     "description": "Turn a repeated workflow into a reusable skill.",
@@ -60,6 +63,7 @@
     "id": "autonomy",
     "title": "Autonomy Level",
     "category": "Work confidently",
+    "level": "beginner",
     "icon": "shield",
     "tagline": "Stay in control of the next step.",
     "description": "Understand which actions need your approval.",
@@ -79,6 +83,7 @@
     "id": "automations",
     "title": "Automations",
     "category": "Build a habit",
+    "level": "beginner",
     "icon": "repeat",
     "tagline": "Good workflows deserve an encore.",
     "description": "Prepare a recurring job, without losing oversight.",
@@ -92,6 +97,48 @@
       {"title": "Rehearse once", "time": "1:30", "prompt": "Run python -m unittest once in this sandbox. Summarize the result here. Do not fix the intentional failure or create an automation. Tell me the absolute sandbox path you used.", "outcome": "Two passing tests and the one intentional threshold failure. The path identifies the correct working directory."},
       {"title": "Preview a trigger", "time": "2:30", "prompt": "In the Factory App, open Automations > New automation > Custom scheduled automation. If a menu opens instead, choose Create with Template. Set Frequency to 0 9 * * 1-5. Do not select Create or Create with session.", "outcome": "Perform these UI actions yourself. The schedule preview shows weekdays at 09:00 UTC; nothing is created."},
       {"title": "Review and leave unsaved", "time": "3:45", "prompt": "Review the form: your own computer, the absolute sandbox working directory, the bounded test-and-report instructions, and Private visibility/session privacy. Leave the form without creating it.", "outcome": "Perform this review yourself. You have rehearsed a scheduled job without registering one. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "custom-droids",
+    "title": "Custom Droids",
+    "category": "Delegate focused work",
+    "level": "intermediate",
+    "icon": "spark",
+    "tagline": "Give a specialist a clear job and a safe boundary.",
+    "description": "Delegate a focused review to a reusable agent with its own context and tool policy.",
+    "explanation": "A custom droid is a reusable subagent definition with its own instructions, model preference, and tool policy. When the parent delegates through Task, the subagent works in a fresh context and returns one final message. Use a narrow task and an explicit tool policy such as read-only when the job is analysis, not editing.",
+    "source": "https://docs.factory.com/harness/subagents.md",
+    "reviewedAt": "November 23, 2026",
+    "takeaways": ["Keep the delegated task narrow and verifiable.", "Set a tool policy that matches the job.", "Ask for evidence in the returned findings."],
+    "starter": "Create .factory/droids/shipping-reviewer.md for a read-only reviewer of this practice sandbox. Have it inspect shipping.py and test_shipping.py, report behavior risks with file and test evidence, and never edit files or run commands.",
+    "setup": "Download and extract the practice sandbox. Start a Factory App session in the extracted coach-sandbox folder. Keep this practice inside that disposable folder.",
+    "steps": [
+      {"title": "Choose a bounded handoff", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Identify one focused review question about the shipping threshold. Do not edit files or delegate yet.", "outcome": "A small review task with concrete files and test evidence to inspect."},
+      {"title": "Define a read-only specialist", "time": "1:30", "prompt": "Create .factory/droids/shipping-reviewer.md with name shipping-reviewer, a focused description, model: inherit, and tools: read-only. In the body, ask it to inspect shipping.py and test_shipping.py, report behavior risks with file and test evidence, and never edit files or run commands. Do not change the calculator.", "outcome": "A Markdown droid definition with a narrow prompt and an enforced read-only tool category."},
+      {"title": "Delegate the review", "time": "2:30", "prompt": "Use the subagent shipping-reviewer to inspect the shipping threshold behavior and tests. Ask for findings with evidence. Do not edit files.", "outcome": "The subagent returns a focused report from its separate context, and the practice files remain unchanged."},
+      {"title": "Check the boundary", "time": "3:45", "prompt": "Show the reviewer definition and its findings. Confirm which tool policy it uses and whether any practice files changed. Do not make further changes.", "outcome": "You can verify the specialist's scope, read-only policy, and evidence. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "hooks",
+    "title": "Hooks",
+    "category": "Automate a check",
+    "level": "intermediate",
+    "icon": "repeat",
+    "tagline": "Make a useful check happen every time.",
+    "description": "Run a small test command automatically after shell commands in a practice project.",
+    "explanation": "Hooks run shell commands at defined Droid lifecycle events. A project PostToolUse hook can match Execute calls and run a deterministic check such as python -m unittest. Hooks run automatically, inherit the local environment, and can combine with hooks from other settings levels, so review each command and test it only in a disposable sandbox.",
+    "source": "https://docs.factory.com/harness/hooks.md",
+    "reviewedAt": "November 23, 2026",
+    "takeaways": ["Choose a specific event and matcher.", "Review commands before registering automatic hooks.", "Test project hooks in a disposable folder."],
+    "starter": "In this disposable sandbox only, draft a project PostToolUse hook matching Execute to run the standard-library unit tests with a 30-second timeout. Resolve the Python executable and test directory to quoted absolute paths. Show the command for review before saving it. Do not use a user-level hook or network command.",
+    "setup": "Download and extract the practice sandbox. Start a Factory App session in the extracted coach-sandbox folder. Project hooks run automatically; review the command and keep the exercise in this disposable folder.",
+    "steps": [
+      {"title": "Pick a repeatable check", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Run python -m unittest once in this sandbox and report the intentional threshold failure. Do not fix it or create a hook yet.", "outcome": "A manually tested local check reports two passing tests and one intentional threshold failure."},
+      {"title": "Draft and review the hook", "time": "1:30", "prompt": "Draft .factory/hooks.json here in chat, without saving it. Use the standalone event map with PostToolUse, matcher Execute, and one command hook with timeout 30. Resolve Python and this sandbox to quoted absolute paths, using -m unittest discover -s with the absolute sandbox directory. Use the hook shell syntax for my operating system. Explain that test failures are non-blocking by default. Do not edit files.", "outcome": "Review the exact JSON and command before allowing it to run automatically. Absolute paths keep the check scoped if the working directory changes."},
+      {"title": "Save and observe it run", "time": "2:30", "prompt": "After I approve the exact draft, save only that hook to this sandbox's .factory/hooks.json. Then run python -c \"print('hook trigger')\" here. Report the command result and hook result. Do not fix the intentional test failure or change any other settings.", "outcome": "Approve the reviewed draft first. The harmless command runs, then the hook surfaces the intentional test failure without blocking by default."},
+      {"title": "Review before keeping it", "time": "3:45", "prompt": "Review .factory/hooks.json. Confirm the event, matcher, command, timeout, and sandbox location. Explain why hooks should be reviewed before saving and never test this command in a personal or production project. Do not change settings outside the sandbox.", "outcome": "You can identify when the hook runs and why automatic commands need a safe test environment. Finish by 5:00."}
     ]
   }
 ]

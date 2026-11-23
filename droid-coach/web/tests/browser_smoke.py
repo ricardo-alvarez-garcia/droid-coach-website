@@ -5,7 +5,7 @@ from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
 
-BASE = "http://127.0.0.1:8000"
+BASE = os.getenv("COACH_TEST_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
 SCREENSHOTS = Path(__file__).resolve().parents[1] / "screenshots"
 
 
@@ -33,7 +33,13 @@ def main():
             page.goto(BASE, wait_until="networkidle")
             if owned:
                 page.set_viewport_size({"width": 1440, "height": 1000})
-            expect(page.locator(".lesson-card")).to_have_count(6)
+            expect(page.locator(".lesson-card")).to_have_count(8)
+            page.get_by_role("searchbox").fill("intermediate")
+            expect(page.locator('.lesson-card:not(.coach-card)')).to_have_count(2)
+            expect(page.locator('.lesson-card[href="#lesson/custom-droids"] .card-category')).to_have_text("Intermediate")
+            expect(page.locator('.lesson-card[href="#lesson/hooks"] .card-category')).to_have_text("Intermediate")
+            page.get_by_role("searchbox").fill("beginner")
+            expect(page.locator('.lesson-card:not(.coach-card)')).to_have_count(5)
             page.get_by_role("searchbox").fill("nonexistent")
             expect(page.get_by_role("status").filter(has_text="No lessons found")).to_be_visible()
             page.get_by_role("searchbox").fill("Skills")
@@ -54,12 +60,29 @@ def main():
             expect(page.locator(".progress-row").filter(has_text="Spec Mode")).to_contain_text("Marked complete")
 
             # Each lesson must have working explanation and practice views.
-            for slug in ("spec-mode", "agents-md", "skills", "autonomy", "automations"):
+            for slug in ("spec-mode", "agents-md", "skills", "autonomy", "automations", "custom-droids", "hooks"):
                 page.goto(BASE + "/#lesson/" + slug, wait_until="networkidle")
                 expect(page.locator(".prose")).to_be_visible()
+                intermediate = slug in ("custom-droids", "hooks")
+                expect(page.locator(".lesson-meta .pill")).to_have_text(
+                    "Intermediate" if intermediate else "Beginner friendly"
+                )
+                if intermediate:
+                    expect(page.locator(".source-note")).to_contain_text("November 23, 2026")
+                page.locator("#ask-about").click()
+                expect(page.locator("#chat-feature")).to_have_value(slug)
+                page.goto(BASE + "/#lesson/" + slug, wait_until="networkidle")
                 page.get_by_role("tab", name="Try it yourself").click()
                 expect(page.locator(".step-dot")).to_have_count(4)
                 expect(page.locator(".demo-setup")).to_contain_text("sandbox")
+                page.locator(".step-dot").first.click()
+                page.get_by_role("button", name="Next step").click()
+                expect(page.locator(".step-caption")).to_contain_text("STEP 2 OF 4")
+                page.get_by_role("button", name="Next step").click()
+                expect(page.locator(".step-caption")).to_contain_text("STEP 3 OF 4")
+                page.locator(".step-dot").last.click()
+                page.get_by_role("button", name="Mark practice complete").click()
+                expect(page.get_by_role("heading", name="One more tool in your toolkit.")).to_be_visible()
 
             page.goto(BASE + "/#coach", wait_until="networkidle")
             expect(page.locator("#chat-setup")).to_be_visible()
@@ -135,7 +158,7 @@ def main():
                 )
                 mobile = page.frame_locator("#responsive-preview")
             expect(mobile.locator("#nav-library")).to_be_visible()
-            expect(mobile.locator(".lesson-card")).to_have_count(6)
+            expect(mobile.locator(".lesson-card")).to_have_count(8)
             assert mobile.locator("html").evaluate(
                 "el => el.scrollWidth <= el.ownerDocument.defaultView.innerWidth"
             ), "Mobile library overflow"
@@ -149,7 +172,7 @@ def main():
                 "el => el.scrollWidth <= el.ownerDocument.defaultView.innerWidth"
             ), "Mobile chat overflow"
             assert not errors, errors
-            print("PASS: library search, five lessons, step navigation, completion, progress, setup state,")
+            print("PASS: level search and badges, seven lessons, step navigation, completion, progress, setup state,")
             print("chat fixtures, conversation isolation, safe rendering, API errors, and mobile layouts.")
         finally:
             if page.is_closed():

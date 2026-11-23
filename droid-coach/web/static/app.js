@@ -65,12 +65,13 @@ function wireCopies() {
 }
 function sourceNote(lesson) {
   return `<div class="source-note">Source: <a href="${escapeHTML(lesson.source)}" target="_blank" rel="noopener noreferrer">Official Factory docs ↗</a><br>
-    Lesson reviewed November 22, 2026. Saved lessons may lag the docs; live chat fetches its source when asked.</div>`;
+    Lesson reviewed ${escapeHTML(lesson.reviewedAt || "November 22, 2026")}. Saved lessons may lag the docs; live chat fetches its source when asked.</div>`;
 }
+const levelLabel = lesson => lesson.level === "intermediate" ? "Intermediate" : "Beginner friendly";
 function card(lesson) {
   const done = progress(lesson.id).done;
   return `<a class="lesson-card" href="#lesson/${lesson.id}">
-    <div class="card-top"><span class="icon-box">${icon(lesson.icon)}</span><span class="card-category">${escapeHTML(lesson.category)}</span></div>
+    <div class="card-top"><span class="icon-box">${icon(lesson.icon)}</span><span class="card-category">${levelLabel(lesson)}</span></div>
     <h3>${escapeHTML(lesson.title)}</h3><p>${escapeHTML(lesson.description)}</p>
     <div class="card-footer"><span>${icon(done ? "check" : "clock")}${done ? "Practice completed" : "5-minute practice"}</span><span class="card-arrow" aria-hidden="true">↗</span></div></a>`;
 }
@@ -90,7 +91,7 @@ function library() {
     <label class="search-wrap">${icon("search")}<input type="search" id="lesson-search" aria-label="Search lessons" placeholder="Find a lesson…" autocomplete="off"></label></div>
     <div class="cards" id="lesson-cards"></div></section>`;
   const renderCards = query => {
-    const matches = state.lessons.filter(l => `${l.title} ${l.description} ${l.category}`.toLowerCase().includes(query.toLowerCase()));
+    const matches = state.lessons.filter(l => `${l.title} ${l.description} ${l.category} ${l.level}`.toLowerCase().includes(query.toLowerCase()));
     document.querySelector("#lesson-cards").innerHTML = matches.length
       ? matches.map(card).join("") + `<a href="#coach" class="lesson-card coach-card"><div class="card-top"><span class="icon-box">${icon("spark")}</span><span class="card-category">YOUR OWN PATH</span></div><h3>A question of<br>your own?</h3><p>Let’s work through it together, one useful step at a time.</p><div class="card-footer"><span>Meet your AI coach</span><span class="card-arrow" aria-hidden="true">↗</span></div></a>`
       : '<div class="empty-state" role="status">No lessons found. Try “Skills” or “planning”.</div>';
@@ -104,7 +105,7 @@ function lessonPage(id) {
   document.querySelector("#breadcrumb").textContent = `Your learning space / ${lesson.title}`;
   main.innerHTML = `<a class="back-link" href="#library">← All lessons</a>
     <div class="lesson-header"><div class="eyebrow">${escapeHTML(lesson.category)}</div><h1>${escapeHTML(lesson.title)}</h1>
-    <p>${escapeHTML(lesson.tagline)}</p><div class="lesson-meta"><span class="pill">Beginner friendly</span><span>Factory App</span><span>5-minute practice</span></div></div>
+    <p>${escapeHTML(lesson.tagline)}</p><div class="lesson-meta"><span class="pill">${levelLabel(lesson)}</span><span>Factory App</span><span>5-minute practice</span></div></div>
     <div class="tabs" role="tablist" aria-label="Lesson format"><button role="tab" id="explain-tab" class="tab ${state.tab === "explain" ? "active" : ""}" aria-selected="${state.tab === "explain"}" aria-controls="lesson-content">Understand it</button>
     <button role="tab" id="practice-tab" class="tab ${state.tab === "demo" ? "active" : ""}" aria-selected="${state.tab === "demo"}" aria-controls="lesson-content">Try it yourself</button></div>
     <div class="lesson-layout"><section class="panel" id="lesson-content" role="tabpanel" aria-labelledby="${state.tab === "demo" ? "practice-tab" : "explain-tab"}"></section>

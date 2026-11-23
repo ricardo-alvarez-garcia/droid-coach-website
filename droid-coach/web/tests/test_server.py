@@ -46,7 +46,11 @@ class WebsiteTests(unittest.TestCase):
 
     def test_lessons_have_real_sources_and_four_steps(self):
         lessons = self.client.get("/api/lessons").json()
-        self.assertEqual(len(lessons), 5)
+        self.assertEqual(len(lessons), 7)
+        self.assertEqual(sum(lesson["level"] == "beginner" for lesson in lessons), 5)
+        self.assertEqual(sum(lesson["level"] == "intermediate" for lesson in lessons), 2)
+        self.assertEqual(FEATURES["custom-droids"]["source"], "https://docs.factory.com/harness/subagents.md")
+        self.assertEqual(FEATURES["hooks"]["source"], "https://docs.factory.com/harness/hooks.md")
         for lesson in lessons:
             self.assertTrue(lesson["source"].startswith("https://docs.factory.com/"))
             self.assertEqual(len(lesson["steps"]), 4)
