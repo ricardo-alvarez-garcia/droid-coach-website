@@ -126,6 +126,9 @@ def main():
                         preview.id = 'responsive-preview';
                         preview.width = '390';
                         preview.height = '844';
+                        // Sit above the host page's fixed sidebar so it cannot cover the preview.
+                        preview.style.cssText =
+                            'position:fixed;top:0;left:0;z-index:2147483647;border:0;background:#fff';
                         preview.srcdoc = html;
                         document.body.prepend(preview);
                     }""", html,
