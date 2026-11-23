@@ -222,6 +222,44 @@ class LiveContractTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(error.exception.status_code, 503)
         self.assertEqual(paths, ["/api/v0/sessions"])
 
+    async def test_unverified_policy_needs_opt_in_and_never_allows_contradictions(self):
+        def run(settings_reply, allow):
+            paths = []
+
+            def transport(request):
+                paths.append(request.url.path)
+                if request.url.path == "/api/v0/sessions":
+                    return httpx.Response(201, json={"sessionId": "s", **settings_reply})
+                if request.url.path.endswith("/execute"):
+                    return httpx.Response(202, json={"messageId": "m"})
+                if request.url.path.endswith("/messages"):
+                    return httpx.Response(200, json={"messages": [
+                        {"id": "m", "role": "user", "content": []},
+                        {"id": "a", "role": "assistant", "content": [{"type": "text", "text": "Hi"}]},
+                    ]})
+                return httpx.Response(200, json={"status": "idle"})
+
+            settings = Settings()
+            settings.allow_unverified_policy = allow
+            return transport, settings, paths
+
+        for reply in ({}, {"sessionSettings": {}}):
+            transport, settings, paths = run(reply, allow=True)
+            async with httpx.AsyncClient(transport=httpx.MockTransport(transport)) as client:
+                self.assertEqual(await Factory(client, settings).answer("Hello"), "Hi")
+            transport, settings, paths = run(reply, allow=False)
+            async with httpx.AsyncClient(transport=httpx.MockTransport(transport)) as client:
+                with self.assertRaises(HTTPException):
+                    await Factory(client, settings).answer("Hello")
+            self.assertEqual(paths, ["/api/v0/sessions"])
+
+        for bad in ({"autonomyLevel": "high"}, {"restrictToolIds": ["Execute"]}):
+            transport, settings, paths = run({"sessionSettings": bad}, allow=True)
+            async with httpx.AsyncClient(transport=httpx.MockTransport(transport)) as client:
+                with self.assertRaises(HTTPException):
+                    await Factory(client, settings).answer("Hello")
+            self.assertEqual(paths, ["/api/v0/sessions"])
+
     async def test_factory_auth_error_is_sanitized(self):
         async with httpx.AsyncClient(transport=httpx.MockTransport(
             lambda request: httpx.Response(403, text="sensitive upstream details")

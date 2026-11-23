@@ -64,6 +64,7 @@ Live chat uses the [Droid Sessions API](https://docs.factory.com/api-reference/s
 | `COACH_PUBLIC_ORIGIN` | Public origin, for example `https://coach.example.com`. Chat requests from other origins are rejected. |
 | `COACH_DAILY_TURNS`, `COACH_HOURLY_TURNS_PER_IP` | Spending limits (defaults 20 per day, 6 per visitor per hour). |
 | `COACH_TURN_TIMEOUT` | Seconds before a turn is stopped (default 120). |
+| `COACH_ALLOW_UNVERIFIED_POLICY` | Set to `1` to allow chat when Factory does not report the session's tool and autonomy settings back. Settings that contradict the request still block chat. Off by default. |
 | `COACH_DATABASE` | SQLite file for the usage limits. Put it on persistent storage. |
 
 Each question creates a session with no tools and autonomy off, sends the live docs page for the lesson, and interrupts the session on errors or timeouts. Every question uses Factory credits on the key owner's account.
