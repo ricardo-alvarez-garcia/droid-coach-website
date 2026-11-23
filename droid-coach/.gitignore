@@ -1,0 +1,10 @@
+# Generated demos are kept in Git by default so they can be shared.
+# Uncomment to treat them as local scratch output instead.
+# demos/
+__pycache__/
+.venv/
+.env
+.env.*
+!.env.example
+web/data/
+web/screenshots/

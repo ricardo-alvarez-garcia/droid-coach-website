@@ -1,0 +1,97 @@
+[
+  {
+    "id": "spec-mode",
+    "title": "Spec Mode",
+    "category": "Start here",
+    "icon": "plan",
+    "tagline": "A little planning. A lot more confidence.",
+    "description": "Review the approach before Droid changes your code.",
+    "explanation": "Spec Mode separates planning from implementation. Droid reads relevant files, investigates the task, and proposes a concrete plan. It should not edit files, start services, or make external changes while planning.\nYou can refine the plan before approving it. Approval returns the session to Normal Mode for implementation; Autonomy Level separately controls subsequent action approvals.",
+    "source": "https://docs.factory.com/autonomy-and-safety/specification-mode.md",
+    "takeaways": ["Describe the outcome, constraints, and checks.", "Refine the plan before approving changes.", "Compare the result with the approved requirements."],
+    "starter": "Read README.md, shipping.py, and test_shipping.py. Plan a fix: shipping costs 500 cents below 5000 cents and is free at or above 5000. Keep shipping_cost(subtotal_cents). Explain how python -m unittest verifies it. Do not edit files yet.",
+    "setup": "Download and extract the practice sandbox. In the Factory App, start a new session in the extracted coach-sandbox folder. Select Spec Mode. Python must already be available.",
+    "steps": [
+      {"title": "Ask for a bounded plan", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Plan a fix: shipping costs 500 cents below 5000 cents and is free at or above 5000. Keep shipping_cost(subtotal_cents). Explain how python -m unittest verifies it. Do not edit files yet.", "outcome": "A plan identifies the strict > comparison as the boundary bug. No code changes."},
+      {"title": "Refine before approving", "time": "1:30", "prompt": "Revise the plan: negative integer subtotals must raise ValueError. Add a test for -1 and preserve the three existing tests. No other input validation is needed. Do not implement yet.", "outcome": "A revised plan adds a negative-input guard and one regression test."},
+      {"title": "Approve and implement", "time": "2:30", "prompt": "After I approve the plan, first run python -m unittest to reproduce the threshold failure. Implement only the approved changes and rerun the tests. Do not install packages, commit, or access the network.", "outcome": "Review and approve the plan through its approval prompt. Implementation starts only after approval."},
+      {"title": "Check the evidence", "time": "3:45", "prompt": "Show the final changes and the test output. Explain how the four tests cover the approved requirements. Do not edit anything else.", "outcome": "Four tests pass, including -1 and the values immediately below, at, and above 5000. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "agents-md",
+    "title": "AGENTS.md",
+    "category": "Make it yours",
+    "icon": "file",
+    "tagline": "Your project. Your ground rules.",
+    "description": "Give every session a dependable project briefing.",
+    "explanation": "AGENTS.md holds durable project instructions: exact commands, conventions, safety boundaries, and the evidence needed before work is finished. Start with one at your repository root and keep it short and concrete.\nDroid loads coding guidance at startup and discovers more specific guidance as it inspects folders. Nested project instructions refine root guidance for their own directory tree.",
+    "source": "https://docs.factory.com/harness/agents-md.md",
+    "takeaways": ["Write commands that can actually be run.", "Keep lasting rules separate from temporary tasks.", "Use nested instructions only for genuine local differences."],
+    "starter": "Create AGENTS.md for this practice sandbox. Require Python standard library only, amounts in cents, a regression test for each bug fix, and python -m unittest before finishing. Do not modify the calculator yet.",
+    "setup": "Download and extract the practice sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. Only this disposable folder will be changed.",
+    "steps": [
+      {"title": "Read the project", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Explain the test command and the intentional bug. Do not change files.", "outcome": "Droid identifies the Python standard-library project and its boundary test."},
+      {"title": "Capture lasting rules", "time": "1:30", "prompt": "Create AGENTS.md for this practice sandbox. Require Python standard library only, amounts in cents, regression tests for bug fixes, and python -m unittest before finishing. No network, package installs, or commits. Do not fix the calculator yet.", "outcome": "A short AGENTS.md appears in the sandbox with exact, verifiable instructions."},
+      {"title": "Use the briefing", "time": "2:30", "prompt": "Read AGENTS.md. Fix the shipping threshold bug without changing shipping_cost(subtotal_cents). Follow the project instructions and show the test evidence.", "outcome": "Droid fixes the existing regression test and runs python -m unittest."},
+      {"title": "Inspect the evidence", "time": "3:45", "prompt": "Show which AGENTS.md rules you followed and the test results. Do not edit more files.", "outcome": "The three tests pass and the explanation names the project rules. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "skills",
+    "title": "Skills",
+    "category": "Make it yours",
+    "icon": "spark",
+    "tagline": "Teach it once. Use it again.",
+    "description": "Turn a repeated workflow into a reusable skill.",
+    "explanation": "A skill packages a reusable workflow in a directory containing SKILL.md. Required name and description frontmatter explain what the workflow is and when it applies. Droid discovers the metadata and loads the full instructions when invoked.\nTeam skills can live under .factory/skills/. Use a skill for a repeatable procedure, rather than always-on project rules. The allowed-tools field is descriptive metadata, not a runtime security boundary.",
+    "source": "https://docs.factory.com/harness/skills.md",
+    "takeaways": ["Give the skill one specific job.", "Describe when Droid should use it.", "Define observable completion criteria."],
+    "starter": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.",
+    "setup": "Download and extract the practice sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. The skill created here is practice-only.",
+    "steps": [
+      {"title": "Name the repeated workflow", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Describe a repeatable test-and-report workflow. Do not change files yet.", "outcome": "A narrow workflow: run the tests, summarize the result, and do not automatically fix anything."},
+      {"title": "Create the skill", "time": "1:30", "prompt": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.", "outcome": "A SKILL.md with name and description frontmatter and a short procedure."},
+      {"title": "Invoke it", "time": "2:30", "prompt": "/check-shipping", "outcome": "If not visible yet, start a new session in the same sandbox and try again. The skill reports the one intentional threshold failure without changing the calculator."},
+      {"title": "Inspect the boundaries", "time": "3:45", "prompt": "Show the skill instructions and explain its trigger, steps, and completion criteria. Do not change any files.", "outcome": "You can identify why the workflow is reusable and what it is allowed to do by instruction. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "autonomy",
+    "title": "Autonomy Level",
+    "category": "Work confidently",
+    "icon": "shield",
+    "tagline": "Stay in control of the next step.",
+    "description": "Understand which actions need your approval.",
+    "explanation": "Autonomy Level controls automatic approval, not tool availability. Off permits built-in reads and commands allowed by policy. Low also allows file edits and low-risk commands or MCP tools. Medium includes more reversible workspace actions; High covers high-risk work unless another safety rule stops it.\nInteraction mode is separate: Spec Mode plans before implementation. Command policy, sandbox rules, and organization controls can still require approval or block an action.",
+    "source": "https://docs.factory.com/autonomy-and-safety/auto-run.md",
+    "takeaways": ["Distinguish planning mode from action approval.", "Use the lowest level that fits the task.", "Remember that organization and sandbox rules still apply."],
+    "starter": "Read README.md, shipping.py, and test_shipping.py without editing anything. Explain which actions this task would need and pause before any change.",
+    "setup": "Download and extract the sandbox. Start a Factory App session inside coach-sandbox in Normal Mode with the Autonomy selector set to Auto Off.",
+    "steps": [
+      {"title": "Begin with reads", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py without editing anything. Explain the threshold bug.", "outcome": "Droid can inspect the project without needing file-edit approval."},
+      {"title": "Observe an edit approval", "time": "1:30", "prompt": "Fix only the shipping threshold comparison. Ask before editing. Do not install packages, commit, or access the network.", "outcome": "At Auto Off an edit should require approval. Review its scope before allowing it."},
+      {"title": "Verify deliberately", "time": "2:30", "prompt": "Run python -m unittest in this sandbox. Do not change any files.", "outcome": "Approve the scoped command if prompted. The three tests pass; command policy can affect whether a prompt appears."},
+      {"title": "Compare without escalating", "time": "3:45", "prompt": "Explain how Auto Low would change file-edit approvals, and why that would not override organization or sandbox restrictions. Do not change settings or run anything.", "outcome": "An explanation of the distinction without switching to a higher autonomy level. Finish by 5:00."}
+    ]
+  },
+  {
+    "id": "automations",
+    "title": "Automations",
+    "category": "Build a habit",
+    "icon": "repeat",
+    "tagline": "Good workflows deserve an encore.",
+    "description": "Prepare a recurring job, without losing oversight.",
+    "explanation": "Automations start a Droid session when a trigger fires: a schedule, Slack message, GitHub event, or webhook. Each automation combines instructions, a run identity, and somewhere to run.\nScheduled jobs on your own computer need it awake, online, and running Droid. Cron schedules run in UTC. You can inspect run sessions and events, and pause an automation without deleting it.",
+    "source": "https://docs.factory.com/automations/custom.md",
+    "takeaways": ["Test the work manually before scheduling it.", "Review the trigger, identity, and run location.", "Check the time zone and operational prerequisites."],
+    "starter": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.",
+    "setup": "Download and extract the sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. This is a setup rehearsal only: do not create or enable an automation.",
+    "steps": [
+      {"title": "Bound the repeated job", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.", "outcome": "A concise prompt for a read-and-report task, with no outside actions."},
+      {"title": "Rehearse once", "time": "1:30", "prompt": "Run python -m unittest once in this sandbox. Summarize the result here. Do not fix the intentional failure or create an automation. Tell me the absolute sandbox path you used.", "outcome": "Two passing tests and the one intentional threshold failure. The path identifies the correct working directory."},
+      {"title": "Preview a trigger", "time": "2:30", "prompt": "In the Factory App, open Automations > New automation > Custom scheduled automation. If a menu opens instead, choose Create with Template. Set Frequency to 0 9 * * 1-5. Do not select Create or Create with session.", "outcome": "Perform these UI actions yourself. The schedule preview shows weekdays at 09:00 UTC; nothing is created."},
+      {"title": "Review and leave unsaved", "time": "3:45", "prompt": "Review the form: your own computer, the absolute sandbox working directory, the bounded test-and-report instructions, and Private visibility/session privacy. Leave the form without creating it.", "outcome": "Perform this review yourself. You have rehearsed a scheduled job without registering one. Finish by 5:00."}
+    ]
+  }
+]

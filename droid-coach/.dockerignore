@@ -1,0 +1,9 @@
+.git
+.factory
+.venv
+.env
+.env.*
+**/__pycache__
+web/data
+web/screenshots
+web/tests
