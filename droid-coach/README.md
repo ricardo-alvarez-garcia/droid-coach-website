@@ -41,7 +41,7 @@ The coach needs network access to the Factory docs. If the docs cannot be reache
 
 ## Website
 
-`web/` is a public learning site with seven guided lessons. The five beginner lessons cover Spec Mode, AGENTS.md, Skills, Autonomy Level, and Automations; the intermediate lessons introduce Custom Droids and Hooks. It also includes a downloadable practice sandbox, saved progress in the visitor's browser, and an optional live AI coach backed by Factory Droid.
+`web/` is a public learning site with seven guided lessons, tagged by feature complexity: **Basic** (Spec Mode, AGENTS.md, Autonomy Level), **Intermediate** (Skills, Custom Droids), and **Advanced** (Automations, Hooks, which run without a prompt from you). It also includes a downloadable practice sandbox, saved progress in the visitor's browser, and an optional live AI coach backed by Factory Droid.
 
 ### Run it locally (Windows PowerShell)
 

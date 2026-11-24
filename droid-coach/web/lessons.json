@@ -3,7 +3,7 @@
     "id": "spec-mode",
     "title": "Spec Mode",
     "category": "Start here",
-    "level": "beginner",
+    "level": "basic",
     "icon": "plan",
     "tagline": "A little planning. A lot more confidence.",
     "description": "Review the approach before Droid changes your code.",
@@ -23,7 +23,7 @@
     "id": "agents-md",
     "title": "AGENTS.md",
     "category": "Make it yours",
-    "level": "beginner",
+    "level": "basic",
     "icon": "file",
     "tagline": "Your project. Your ground rules.",
     "description": "Give every session a dependable project briefing.",
@@ -40,30 +40,10 @@
     ]
   },
   {
-    "id": "skills",
-    "title": "Skills",
-    "category": "Make it yours",
-    "level": "beginner",
-    "icon": "spark",
-    "tagline": "Teach it once. Use it again.",
-    "description": "Turn a repeated workflow into a reusable skill.",
-    "explanation": "A skill packages a reusable workflow in a directory containing SKILL.md. Required name and description frontmatter explain what the workflow is and when it applies. Droid discovers the metadata and loads the full instructions when invoked.\nTeam skills can live under .factory/skills/. Use a skill for a repeatable procedure, rather than always-on project rules. The allowed-tools field is descriptive metadata, not a runtime security boundary.",
-    "source": "https://docs.factory.com/harness/skills.md",
-    "takeaways": ["Give the skill one specific job.", "Describe when Droid should use it.", "Define observable completion criteria."],
-    "starter": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.",
-    "setup": "Download and extract the practice sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. The skill created here is practice-only.",
-    "steps": [
-      {"title": "Name the repeated workflow", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Describe a repeatable test-and-report workflow. Do not change files yet.", "outcome": "A narrow workflow: run the tests, summarize the result, and do not automatically fix anything."},
-      {"title": "Create the skill", "time": "1:30", "prompt": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.", "outcome": "A SKILL.md with name and description frontmatter and a short procedure."},
-      {"title": "Invoke it", "time": "2:30", "prompt": "/check-shipping", "outcome": "If not visible yet, start a new session in the same sandbox and try again. The skill reports the one intentional threshold failure without changing the calculator."},
-      {"title": "Inspect the boundaries", "time": "3:45", "prompt": "Show the skill instructions and explain its trigger, steps, and completion criteria. Do not change any files.", "outcome": "You can identify why the workflow is reusable and what it is allowed to do by instruction. Finish by 5:00."}
-    ]
-  },
-  {
     "id": "autonomy",
     "title": "Autonomy Level",
     "category": "Work confidently",
-    "level": "beginner",
+    "level": "basic",
     "icon": "shield",
     "tagline": "Stay in control of the next step.",
     "description": "Understand which actions need your approval.",
@@ -80,23 +60,23 @@
     ]
   },
   {
-    "id": "automations",
-    "title": "Automations",
-    "category": "Build a habit",
-    "level": "beginner",
-    "icon": "repeat",
-    "tagline": "Good workflows deserve an encore.",
-    "description": "Prepare a recurring job, without losing oversight.",
-    "explanation": "Automations start a Droid session when a trigger fires: a schedule, Slack message, GitHub event, or webhook. Each automation combines instructions, a run identity, and somewhere to run.\nScheduled jobs on your own computer need it awake, online, and running Droid. Cron schedules run in UTC. You can inspect run sessions and events, and pause an automation without deleting it.",
-    "source": "https://docs.factory.com/automations/custom.md",
-    "takeaways": ["Test the work manually before scheduling it.", "Review the trigger, identity, and run location.", "Check the time zone and operational prerequisites."],
-    "starter": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.",
-    "setup": "Download and extract the sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. This is a setup rehearsal only: do not create or enable an automation.",
+    "id": "skills",
+    "title": "Skills",
+    "category": "Make it yours",
+    "level": "intermediate",
+    "icon": "spark",
+    "tagline": "Teach it once. Use it again.",
+    "description": "Turn a repeated workflow into a reusable skill.",
+    "explanation": "A skill packages a reusable workflow in a directory containing SKILL.md. Required name and description frontmatter explain what the workflow is and when it applies. Droid discovers the metadata and loads the full instructions when invoked.\nTeam skills can live under .factory/skills/. Use a skill for a repeatable procedure, rather than always-on project rules. The allowed-tools field is descriptive metadata, not a runtime security boundary.",
+    "source": "https://docs.factory.com/harness/skills.md",
+    "takeaways": ["Give the skill one specific job.", "Describe when Droid should use it.", "Define observable completion criteria."],
+    "starter": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.",
+    "setup": "Download and extract the practice sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. The skill created here is practice-only.",
     "steps": [
-      {"title": "Bound the repeated job", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.", "outcome": "A concise prompt for a read-and-report task, with no outside actions."},
-      {"title": "Rehearse once", "time": "1:30", "prompt": "Run python -m unittest once in this sandbox. Summarize the result here. Do not fix the intentional failure or create an automation. Tell me the absolute sandbox path you used.", "outcome": "Two passing tests and the one intentional threshold failure. The path identifies the correct working directory."},
-      {"title": "Preview a trigger", "time": "2:30", "prompt": "In the Factory App, open Automations > New automation > Custom scheduled automation. If a menu opens instead, choose Create with Template. Set Frequency to 0 9 * * 1-5. Do not select Create or Create with session.", "outcome": "Perform these UI actions yourself. The schedule preview shows weekdays at 09:00 UTC; nothing is created."},
-      {"title": "Review and leave unsaved", "time": "3:45", "prompt": "Review the form: your own computer, the absolute sandbox working directory, the bounded test-and-report instructions, and Private visibility/session privacy. Leave the form without creating it.", "outcome": "Perform this review yourself. You have rehearsed a scheduled job without registering one. Finish by 5:00."}
+      {"title": "Name the repeated workflow", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Describe a repeatable test-and-report workflow. Do not change files yet.", "outcome": "A narrow workflow: run the tests, summarize the result, and do not automatically fix anything."},
+      {"title": "Create the skill", "time": "1:30", "prompt": "Create .factory/skills/check-shipping/SKILL.md with name check-shipping and a description for checking this practice calculator. Instruct it to run python -m unittest and summarize failures, without fixing files, installing packages, or making network calls.", "outcome": "A SKILL.md with name and description frontmatter and a short procedure."},
+      {"title": "Invoke it", "time": "2:30", "prompt": "/check-shipping", "outcome": "If not visible yet, start a new session in the same sandbox and try again. The skill reports the one intentional threshold failure without changing the calculator."},
+      {"title": "Inspect the boundaries", "time": "3:45", "prompt": "Show the skill instructions and explain its trigger, steps, and completion criteria. Do not change any files.", "outcome": "You can identify why the workflow is reusable and what it is allowed to do by instruction. Finish by 5:00."}
     ]
   },
   {
@@ -121,10 +101,30 @@
     ]
   },
   {
+    "id": "automations",
+    "title": "Automations",
+    "category": "Build a habit",
+    "level": "advanced",
+    "icon": "repeat",
+    "tagline": "Good workflows deserve an encore.",
+    "description": "Prepare a recurring job, without losing oversight.",
+    "explanation": "Automations start a Droid session when a trigger fires: a schedule, Slack message, GitHub event, or webhook. Each automation combines instructions, a run identity, and somewhere to run.\nScheduled jobs on your own computer need it awake, online, and running Droid. Cron schedules run in UTC. You can inspect run sessions and events, and pause an automation without deleting it.",
+    "source": "https://docs.factory.com/automations/custom.md",
+    "takeaways": ["Test the work manually before scheduling it.", "Review the trigger, identity, and run location.", "Check the time zone and operational prerequisites."],
+    "starter": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.",
+    "setup": "Download and extract the sandbox. Start a Factory App session inside coach-sandbox in Normal Mode. This is a setup rehearsal only: do not create or enable an automation.",
+    "steps": [
+      {"title": "Bound the repeated job", "time": "0:30", "prompt": "Read README.md, shipping.py, and test_shipping.py. Draft instructions for a recurring test-and-report job. It must stop after a test failure, report here only, never edit files, and never install packages or access the network. Do not create an automation.", "outcome": "A concise prompt for a read-and-report task, with no outside actions."},
+      {"title": "Rehearse once", "time": "1:30", "prompt": "Run python -m unittest once in this sandbox. Summarize the result here. Do not fix the intentional failure or create an automation. Tell me the absolute sandbox path you used.", "outcome": "Two passing tests and the one intentional threshold failure. The path identifies the correct working directory."},
+      {"title": "Preview a trigger", "time": "2:30", "prompt": "In the Factory App, open Automations > New automation > Custom scheduled automation. If a menu opens instead, choose Create with Template. Set Frequency to 0 9 * * 1-5. Do not select Create or Create with session.", "outcome": "Perform these UI actions yourself. The schedule preview shows weekdays at 09:00 UTC; nothing is created."},
+      {"title": "Review and leave unsaved", "time": "3:45", "prompt": "Review the form: your own computer, the absolute sandbox working directory, the bounded test-and-report instructions, and Private visibility/session privacy. Leave the form without creating it.", "outcome": "Perform this review yourself. You have rehearsed a scheduled job without registering one. Finish by 5:00."}
+    ]
+  },
+  {
     "id": "hooks",
     "title": "Hooks",
     "category": "Automate a check",
-    "level": "intermediate",
+    "level": "advanced",
     "icon": "repeat",
     "tagline": "Make a useful check happen every time.",
     "description": "Run a small test command automatically after shell commands in a practice project.",

@@ -67,7 +67,8 @@ function sourceNote(lesson) {
   return `<div class="source-note">Source: <a href="${escapeHTML(lesson.source)}" target="_blank" rel="noopener noreferrer">Official Factory docs ↗</a><br>
     Lesson reviewed ${escapeHTML(lesson.reviewedAt || "November 22, 2026")}. Saved lessons may lag the docs; live chat fetches its source when asked.</div>`;
 }
-const levelLabel = lesson => lesson.level === "intermediate" ? "Intermediate" : "Beginner friendly";
+const LEVEL_LABELS = { basic: "Basic", intermediate: "Intermediate", advanced: "Advanced" };
+const levelLabel = lesson => LEVEL_LABELS[lesson.level] || LEVEL_LABELS.basic;
 function card(lesson) {
   const done = progress(lesson.id).done;
   return `<a class="lesson-card" href="#lesson/${lesson.id}">

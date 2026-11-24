@@ -7,6 +7,11 @@ from playwright.sync_api import expect, sync_playwright
 
 BASE = os.getenv("COACH_TEST_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
 SCREENSHOTS = Path(__file__).resolve().parents[1] / "screenshots"
+LEVELS = {
+    "basic": ("spec-mode", "agents-md", "autonomy"),
+    "intermediate": ("skills", "custom-droids"),
+    "advanced": ("automations", "hooks"),
+}
 
 
 def main():
@@ -34,12 +39,12 @@ def main():
             if owned:
                 page.set_viewport_size({"width": 1440, "height": 1000})
             expect(page.locator(".lesson-card")).to_have_count(8)
-            page.get_by_role("searchbox").fill("intermediate")
-            expect(page.locator('.lesson-card:not(.coach-card)')).to_have_count(2)
-            expect(page.locator('.lesson-card[href="#lesson/custom-droids"] .card-category')).to_have_text("Intermediate")
-            expect(page.locator('.lesson-card[href="#lesson/hooks"] .card-category')).to_have_text("Intermediate")
-            page.get_by_role("searchbox").fill("beginner")
-            expect(page.locator('.lesson-card:not(.coach-card)')).to_have_count(5)
+            for level, slugs in LEVELS.items():
+                page.get_by_role("searchbox").fill(level)
+                expect(page.locator(".lesson-card:not(.coach-card)")).to_have_count(len(slugs))
+                for slug in slugs:
+                    card = page.locator(f'.lesson-card[href="#lesson/{slug}"] .card-category')
+                    expect(card).to_have_text(level.title())
             page.get_by_role("searchbox").fill("nonexistent")
             expect(page.get_by_role("status").filter(has_text="No lessons found")).to_be_visible()
             page.get_by_role("searchbox").fill("Skills")
@@ -60,14 +65,11 @@ def main():
             expect(page.locator(".progress-row").filter(has_text="Spec Mode")).to_contain_text("Marked complete")
 
             # Each lesson must have working explanation and practice views.
-            for slug in ("spec-mode", "agents-md", "skills", "autonomy", "automations", "custom-droids", "hooks"):
+            for level, slug in ((level, slug) for level, slugs in LEVELS.items() for slug in slugs):
                 page.goto(BASE + "/#lesson/" + slug, wait_until="networkidle")
                 expect(page.locator(".prose")).to_be_visible()
-                intermediate = slug in ("custom-droids", "hooks")
-                expect(page.locator(".lesson-meta .pill")).to_have_text(
-                    "Intermediate" if intermediate else "Beginner friendly"
-                )
-                if intermediate:
+                expect(page.locator(".lesson-meta .pill")).to_have_text(level.title())
+                if slug in ("custom-droids", "hooks"):
                     expect(page.locator(".source-note")).to_contain_text("November 23, 2026")
                 page.locator("#ask-about").click()
                 expect(page.locator("#chat-feature")).to_have_value(slug)
@@ -172,7 +174,7 @@ def main():
                 "el => el.scrollWidth <= el.ownerDocument.defaultView.innerWidth"
             ), "Mobile chat overflow"
             assert not errors, errors
-            print("PASS: level search and badges, seven lessons, step navigation, completion, progress, setup state,")
+            print("PASS: basic/intermediate/advanced search and badges, seven lessons, step navigation, completion, progress, setup state,")
             print("chat fixtures, conversation isolation, safe rendering, API errors, and mobile layouts.")
         finally:
             if page.is_closed():
